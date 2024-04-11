@@ -19,7 +19,6 @@ object Sequences: // Essentially, generic linkedlists
         sequence = Cons(e, sequence)
       sequence.reverse()
 
-
     def empty[A]: Sequence[A] = Nil()
 
     extension [A](sequence: Sequence[A])
@@ -51,10 +50,15 @@ object Sequences: // Essentially, generic linkedlists
       def reverse(): Sequence[A] = sequence match
         case Cons(h, t) => t.reverse().concat(Cons(h, Nil()))
         case _ => Nil()
+
+      def add(element: A): Sequence[A] = sequence.concat(Cons(element, Nil()))
+
+
 @main def trySequences =
   import Sequences.* 
   val sequence = Sequence(1, 2, 3)
   println(sequence)
+  println(sequence.add(4))
   println(sequence.head)
   println(sequence.map(_ * 2))
   println(sequence.flatMap(x => Sequence(x, x * 2)))
