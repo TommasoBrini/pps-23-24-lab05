@@ -66,7 +66,8 @@ object Warehouse:
     override def contains(itemCode: Int): Boolean = sequence.map(x => x.code).contains(itemCode)
 
 
-
+object sameTag:
+  def unapply(sequence: Sequence[Item]): Option[Sequence[String]] = ???
 
 
 @main def mainWarehouse(): Unit =
@@ -88,6 +89,16 @@ object Warehouse:
   println(warehouse.retrieve(dellXps.code)) // Just(dellXps)
   warehouse.remove(dellXps) // side effect, remove dell xps from the warehouse
   println(warehouse.retrieve(dellXps.code)) // None
+
+  val dellXps2 = Item(33, "Dell XPS 15", "notebook")
+  val dellInspiron2 = Item(34, "Dell Inspiron 13", "notebook")
+  val xiaomiMoped2 = Item(35, "Xiaomi S1", "moped", "mobility", "notebook")
+  val items = Sequence(dellXps2, dellInspiron2, xiaomiMoped2)
+  println(items.length)
+  items match
+    case sameTag(t) => println (s" $items have same tag $t")
+    case _ => println (s" $items have different tags ")
+
 
 /** Hints:
  * - Implement the Item with a simple case class

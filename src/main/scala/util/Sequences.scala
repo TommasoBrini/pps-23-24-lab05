@@ -53,6 +53,9 @@ object Sequences: // Essentially, generic linkedlists
 
       def add(element: A): Sequence[A] = sequence.concat(Cons(element, Nil()))
 
+      def length: Int = sequence match
+        case Cons(head, tail) => 1 + tail.length
+        case _ => 0
 
 @main def trySequences =
   import Sequences.* 
