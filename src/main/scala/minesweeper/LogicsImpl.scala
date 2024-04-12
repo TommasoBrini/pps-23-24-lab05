@@ -8,16 +8,25 @@ import java.awt.GridBagConstraints
 import scala.jdk.javaapi.OptionConverters
 
 trait Grid:
-  def n: Unit
+  def hasHittenBomb(coordinates: Pair[Integer, Integer]): Boolean
+  def click(coordinates: Pair[Integer, Integer]): Unit
+  def getCell(coordinates: Pair[Integer, Integer]): Cell
 
 case class GridImpl() extends Grid:
-  override def n: Unit = println("Inizio game")
+  override def hasHittenBomb(coordinates: Pair[Integer, Integer]): Boolean = false
+  override def click(coordinates: Pair[Integer, Integer]): Unit = println("click")
+
+  override def getCell(coordinates: Pair[Integer, Integer]): Cell = CellImpl()
 
 trait Cell:
-  def click(): Unit
+  def click: Unit
+  def getFlag: Boolean
+
+case class CellImpl() extends Cell:
+  override def click: Unit = println("click")
+  override def getFlag: Boolean = false
 
 
-/** solution and descriptions at https://bitbucket.org/mviroli/oop2019-esami/src/master/a01b/sol2/ */
 case class LogicsImpl(private val size: Int, private val mines: Int) extends Logics:
   override def click(coordinates: Pair[Integer, Integer]): Unit =
     println(coordinates)

@@ -89,11 +89,11 @@ public class GUI extends JFrame {
             if(logics.isDiscovered(entry.getValue())){
                 entry.getKey().setText(logics.getCellStamp(entry.getValue()));
                 entry.getKey().setEnabled(false);
-            } /*else if(logics.getGrid().getCell(entry.getValue()).getFlag()){
+            } else if(logics.getGrid().getCell(entry.getValue()).getFlag()){
                 entry.getKey().setText("F");
             } else {
                 entry.getKey().setText("");
-            }*/
+            }
             // call the logic here
             // if this button is a cell with counter, put the number
             // if this button has a flag, put the flag
