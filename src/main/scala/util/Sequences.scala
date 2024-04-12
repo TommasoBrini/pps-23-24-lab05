@@ -47,15 +47,18 @@ object Sequences: // Essentially, generic linkedlists
 
       def contains(e: A): Boolean = !sequence.find(_ == e).isEmpty
 
+      def intersect(seq2: Sequence[A]): Sequence[A] =
+        sequence.filter(seq2.contains)
+
       def reverse(): Sequence[A] = sequence match
         case Cons(h, t) => t.reverse().concat(Cons(h, Nil()))
         case _ => Nil()
 
       def add(element: A): Sequence[A] = sequence.concat(Cons(element, Nil()))
 
-      def length: Int = sequence match
-        case Cons(head, tail) => 1 + tail.length
-        case _ => 0
+      def foldLeft[B](default: B)(f: (B, A) => B): B = sequence match
+        case Cons(x, y) => y.foldLeft(f(default, x))(f)
+        case _ => default
 
 @main def trySequences =
   import Sequences.* 
@@ -69,5 +72,6 @@ object Sequences: // Essentially, generic linkedlists
   println(sequence.concat(Sequence(4, 5, 6)))
   println(sequence.find(_ % 2 == 0))
   println(sequence.contains(2))
+  println(sequence.intersect(Sequence(1,4,5,6)))
 
 
