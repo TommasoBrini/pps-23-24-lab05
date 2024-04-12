@@ -1,9 +1,19 @@
 package minesweeper;
-import java.util.Optional;
 
-/** solution and descriptions at https://bitbucket.org/mviroli/oop2019-esami/src/master/a01b/sol2/ */
+import polyglot.Pair;
+
 public interface Logics {
-    Optional<Integer> hit(int x, int y);
+    public void click(Pair<Integer, Integer> coordinates);
 
-    boolean won();
+    boolean isBombSelected(Pair<Integer, Integer> pos);
+
+    boolean isWin();
+
+    Grid getGrid();
+
+    String getCellStamp(Pair<Integer, Integer> pos);
+
+    boolean isDiscovered(Pair<Integer, Integer> pos);
+
+    void setFlag(Pair<Integer, Integer> pos);
 }
