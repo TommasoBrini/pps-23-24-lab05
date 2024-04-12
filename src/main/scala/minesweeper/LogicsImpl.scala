@@ -18,7 +18,7 @@ trait Cell:
 
 
 /** solution and descriptions at https://bitbucket.org/mviroli/oop2019-esami/src/master/a01b/sol2/ */
-class LogicsImpl(private val size: Int, private val mines: Int) extends Logics:
+case class LogicsImpl(private val size: Int, private val mines: Int) extends Logics:
   override def click(coordinates: Pair[Integer, Integer]): Unit =
     println(coordinates)
 
