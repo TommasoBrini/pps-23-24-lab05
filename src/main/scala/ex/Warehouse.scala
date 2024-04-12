@@ -9,7 +9,7 @@ trait Item:
 
 object Item:
   def apply(code: Int, name: String, tags: String*): Item = ItemImpl(code, name, Sequence(tags*))
-
+  def empty: Item = ItemImpl(0, "", Sequence(""))
   private case class ItemImpl(code: Int, name: String, tags: Sequence[String]) extends Item
 
 
@@ -65,9 +65,14 @@ object Warehouse:
 
     override def contains(itemCode: Int): Boolean = sequence.map(x => x.code).contains(itemCode)
 
-
 object sameTag:
-  def unapply(sequence: Sequence[Item]): Option[Sequence[String]] = ???
+  def unapply(sequence: Sequence[Item]): Option[Sequence[String]] =
+    var headTags = sequence.head.orElse(Item.empty).tags
+    var allTags = sequence.map(_.tags)
+    var res = allTags.foldLeft(headTags)((acc, sequence) => acc.intersect(sequence))
+    res match
+      case Sequence.Nil() => Option.empty
+      case _ => Option.apply(res)
 
 
 @main def mainWarehouse(): Unit =
@@ -90,14 +95,15 @@ object sameTag:
   warehouse.remove(dellXps) // side effect, remove dell xps from the warehouse
   println(warehouse.retrieve(dellXps.code)) // None
 
-  val dellXps2 = Item(33, "Dell XPS 15", "notebook")
-  val dellInspiron2 = Item(34, "Dell Inspiron 13", "notebook")
+
+  val dellXps2 = Item(33, "Dell XPS 15", "notebook", "mobility")
+  val dellInspiron2 = Item(34, "Dell Inspiron 13", "notebook", "mobility")
   val xiaomiMoped2 = Item(35, "Xiaomi S1", "moped", "mobility", "notebook")
   val items = Sequence(dellXps2, dellInspiron2, xiaomiMoped2)
-  println(items.length)
   items match
     case sameTag(t) => println (s" $items have same tag $t")
     case _ => println (s" $items have different tags ")
+
 
 
 /** Hints:

@@ -56,7 +56,7 @@ object Sequences: // Essentially, generic linkedlists
 
       def add(element: A): Sequence[A] = sequence.concat(Cons(element, Nil()))
 
-      def foldLeft[B](default: B)(f: (B, A) => B): B = sequence match
+      def foldLeft(default: Sequence[String])(f: (Sequence[String], A) => Sequence[String]): Sequence[String] = sequence match
         case Cons(x, y) => y.foldLeft(f(default, x))(f)
         case _ => default
 
