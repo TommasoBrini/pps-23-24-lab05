@@ -1,58 +1,54 @@
-/*package minesweeper;
+package minesweeper;
+
+import polyglot.Pair;
+import minesweeper.Logics;
+import minesweeper.LogicsImpl;
 
 import javax.swing.*;
-
-import e1.step2.Logics;
-import e1.step2.LogicsImpl;
-
-import java.util.*;
-import java.util.Map.Entry;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class GUI extends JFrame {
-    
+
     private static final long serialVersionUID = -6218820567019985015L;
     private final Map<JButton,Pair<Integer,Integer>> buttons = new HashMap<>();
     private final Logics logics;
-    private final static int SIZE = 5;
-    
-    public GUI() {
-        this.logics = new LogicsImpl(SIZE);
+
+    public GUI(int size, int mines) {
+        this.logics = new LogicsImpl(size,mines);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(100*SIZE, 100*SIZE);
-        
-        JPanel panel = new JPanel(new GridLayout(SIZE,SIZE));
+        this.setSize(100*size, 100*size);
+
+        JPanel panel = new JPanel(new GridLayout(size,size));
         this.getContentPane().add(BorderLayout.CENTER,panel);
-        
+
         ActionListener al = (e)->{
             final JButton bt = (JButton)e.getSource();
-            final Pair<Integer,Integer> pos = buttons.get(bt);
-            if (logics.hit(pos.getX(),pos.getY())) {
-            	System.exit(0);
+            final Pair<Integer,Integer> p = buttons.get(bt);
+            //System.out.println("hit "+p);
+            Optional<Integer> result = logics.hit(p.getX(), p.getY());
+            if (result.isPresent() && !logics.won()) {
+                bt.setText(String.valueOf(result.get()));
+                bt.setEnabled(false);
             } else {
-                draw();            	
+                System.out.println(logics.won() ? "WON" : "LOST");
+                System.exit(0);
             }
         };
-                
-        for (int i=0; i<SIZE; i++){
-            for (int j=0; j<SIZE; j++){
+
+        for (int i=0; i<size; i++){
+            for (int j=0; j<size; j++){
                 final JButton jb = new JButton(" ");
                 jb.addActionListener(al);
-                this.buttons.put(jb,new Pair<>(i,j));
+                this.buttons.put(jb,new Pair<>(j,i));
                 panel.add(jb);
             }
         }
-        this.draw();
         this.setVisible(true);
     }
-    
-    private void draw() {
-    	for (Entry<JButton,Pair<Integer,Integer>> entry: this.buttons.entrySet()) {
-    		String str = logics.hasPawn(entry.getValue().getX(), entry.getValue().getY()) ? "*" :
-    					 logics.hasKnight(entry.getValue().getX(), entry.getValue().getY()) ? "K" : " ";
-    		entry.getKey().setText(str);
-    	}
-    }
-    
-}*/
+
+}
+
