@@ -40,22 +40,28 @@ trait Grid:
   def click(coordinates: Pair[Integer, Integer]): Unit
 
 object Grid:
-  def apply(gridSize: Int, numberMines: Int): Grid =
-    GridImpl(gridSize, numberMines)
+  private def initialize(size: Int, mines: Int): Sequence[Cell] =
+    var cellList: Sequence[Cell] = Sequence.empty
+    cellList
 
-  case class GridImpl(override val size: Int, mines: Int) extends Grid:
-    def cells: Sequence[Cell]
+  def apply(gridSize: Int, numberMines: Int): Grid =
+    var cellsList: Sequence[Cell] = initialize(gridSize, numberMines)
+    GridImpl(gridSize, cellsList)
+
+  case class GridImpl(override val size: Int, override val cells: Sequence[Cell]) extends Grid:
+
     override def hasHittenBomb(coordinates: Pair[Integer, Integer]): Boolean = false
 
     override def click(coordinates: Pair[Integer, Integer]): Unit = println("click")
 
-    override def getCell(coordinates: Pair[Integer, Integer]): Cell = cells.head.orElse(CellImpl(CellState.Empty))
+    override def getCell(coordinates: Pair[Integer, Integer]): Cell = cells.head.orElse(Cell(Pair(0,0), CellState.Empty, isDiscovered = false, isFlagged = false))
+
 
 case class LogicsImpl(private val size: Int, private val mines: Int) extends Logics:
   override def click(coordinates: Pair[Integer, Integer]): Unit =
     println(coordinates)
 
-  override def isBombSelected(pos: Pair[Integer, Integer]): Boolean = true
+  override def isBombSelected(pos: Pair[Integer, Integer]): Boolean = false
 
   override def isWin: Boolean = false
 
