@@ -56,9 +56,26 @@ object Sequences: // Essentially, generic linkedlists
 
       def add(element: A): Sequence[A] = sequence.concat(Cons(element, Nil()))
 
-      def foldLeft(default: Sequence[String])(f: (Sequence[String], A) => Sequence[String]): Sequence[String] = sequence match
+      def foldLeft[B](default: B)(f: (B, A) => B): B = sequence match
         case Cons(x, y) => y.foldLeft(f(default, x))(f)
         case _ => default
+
+      def length: Int = sequence match
+          case Cons(_, t) => 1 + t.length
+          case _ => 0
+
+      def forEach(f: A=> Unit): Unit = sequence match
+        case Cons(h,t) =>
+          f(h)
+          t.forEach(f)
+        case _ => ()
+
+      def forAll(f: A => Boolean): Boolean =
+        def loop(s: Sequence[A]): Boolean = s match
+          case Cons(h,t) if f(h) => loop(t)
+          case Nil() => true
+          case _ => false
+        loop(sequence)
 
 @main def trySequences =
   import Sequences.* 
@@ -73,5 +90,6 @@ object Sequences: // Essentially, generic linkedlists
   println(sequence.find(_ % 2 == 0))
   println(sequence.contains(2))
   println(sequence.intersect(Sequence(1,4,5,6)))
+  println(sequence.forAll(_ > 0))
 
 
