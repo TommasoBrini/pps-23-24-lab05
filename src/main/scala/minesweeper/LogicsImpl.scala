@@ -44,7 +44,6 @@ trait Grid:
 
 object Grid:
   private def initialize(size: Int, mines: Int): Sequence[Cell] =
-    println(size)
     val allPositions = for {
       i <- 0 until size
       j <- 0 until size
@@ -58,7 +57,6 @@ object Grid:
         Cell(Pair(x,y), CellState.Empty, false, false)
       }
     }.toList // Convertiamo il risultato in una lista
-    println(cellList)
     Sequence(cellList: _*)
 
   def apply(gridSize: Int, numberMines: Int): Grid =
