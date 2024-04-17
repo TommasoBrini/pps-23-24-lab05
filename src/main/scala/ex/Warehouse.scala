@@ -69,7 +69,7 @@ object sameTag:
   def unapply(sequence: Sequence[Item]): Option[Sequence[String]] =
     var headTags = sequence.head.orElse(Item.empty).tags
     var allTags = sequence.map(_.tags)
-    var res = allTags.foldLeft(headTags)((acc, sequence) => acc.intersect(sequence))
+    var res = allTags.foldLeft(headTags)(_ intersect _)
     res match
       case Sequence.Nil() => Option.empty
       case _ => Option.apply(res)
